@@ -35,4 +35,13 @@ describe("GET", () => {
         });
     });
   });
+
+  test('Status 404: should receive a message of "path not found" if incorrect path requested', () => {
+    return request(app)
+      .get("/api/toppics")
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("path not found");
+      });
+  });
 });
