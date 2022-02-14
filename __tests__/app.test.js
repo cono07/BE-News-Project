@@ -16,32 +16,43 @@ describe("GET", () => {
         .then(({ body: { message } }) => {
           expect(message).toBe("endpoint connected successfully");
         });
+
+      test('status 200: should return 3 objects, each with the keys of "slug" and "description', () => {
+        return request(app)
+          .get("/api/topics")
+          .expect(200)
+          .then(({ body: { topics } }) => {
+            expect(topics).toHaveLength(3);
+            topics.forEach((topic) => {
+              expect(topic).toEqual(
+                expect.objectContaining({
+                  slug: expect.any(String),
+                  description: expect.any(String),
+                })
+              );
+            });
+          });
+      });
     });
 
-    test('status 200: should return 3 objects, each with the keys of "slug" and "description', () => {
+    test('Status 404: should receive a message of "path not found" if incorrect path requested', () => {
       return request(app)
-        .get("/api/topics")
-        .expect(200)
-        .then(({ body: { topics } }) => {
-          expect(topics).toHaveLength(3);
-          topics.forEach((topic) => {
-            expect(topic).toEqual(
-              expect.objectContaining({
-                slug: expect.any(String),
-                description: expect.any(String),
-              })
-            );
-          });
+        .get("/api/toppics")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("path not found");
         });
     });
   });
 
-  test('Status 404: should receive a message of "path not found" if incorrect path requested', () => {
-    return request(app)
-      .get("/api/toppics")
-      .expect(404)
-      .then(({ body: { message } }) => {
-        expect(message).toBe("path not found");
-      });
+  describe("/api/articles/:article_id", () => {
+    test('status 200 : should return a message "endpoint connected successfully"', () => {
+      return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("endpoint connected successfully");
+        });
+    });
   });
 });
