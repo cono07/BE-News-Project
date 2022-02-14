@@ -73,5 +73,23 @@ describe("GET", () => {
           );
         });
     });
+
+    test('status 400: should receive message "bad request" when string type entered for article id', () => {
+      return request(app)
+        .get("/api/articles/one")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("bad request");
+        });
+    });
+
+    test('status 404: should receive message "path not found" when string type entered for article id', () => {
+      return request(app)
+        .get("/api/articless/1")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("path not found");
+        });
+    });
   });
 });
