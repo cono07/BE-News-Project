@@ -83,7 +83,7 @@ describe("GET", () => {
         });
     });
 
-    test('status 404: should receive message "path not found" when string type entered for article id', () => {
+    test('status 404: should receive message "path not found" when incorrect path entered', () => {
       return request(app)
         .get("/api/articless/1")
         .expect(404)
