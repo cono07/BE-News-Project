@@ -93,3 +93,27 @@ describe("GET", () => {
     });
   });
 });
+
+describe("GET", () => {
+  describe("/api/users", () => {
+    test("200 status: Success message will be received.", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("endpoint connected successfully");
+        });
+    });
+
+    // test('200 status: should return an object of users, with a property of "username" for each user', () => {
+    //   return require(app)
+    //     .get("/api/users")
+    //     .expect(200)
+    //     .then(({ body: { users } }) => {
+    //       users.forEach((user) => {
+    //         expect(user).toEqual(expect.objectContaining({}));
+    //       });
+    //     });
+    // });
+  });
+});

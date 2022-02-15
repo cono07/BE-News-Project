@@ -5,12 +5,14 @@ const {
   handlePsqlErrors,
   handle500Errors,
 } = require("./controllers/errors.controllers");
+const { getAllUsers } = require("./controllers/users.controllers");
 
 const app = express();
 app.use(express.json());
 
 app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticleById);
+app.get("/api/users", getAllUsers);
 
 module.exports = app;
 
