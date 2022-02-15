@@ -1,4 +1,8 @@
-const { fetchArticleById } = require("../models/articles.models");
+const {
+  fetchArticleById,
+  updateVoteByArticleId,
+  checkArticleExists,
+} = require("../models/articles.models");
 
 exports.getArticleById = (req, res, next) => {
   const { article_id } = req.params;
@@ -9,4 +13,19 @@ exports.getArticleById = (req, res, next) => {
         .send({ article, message: "endpoint connected successfully" });
     })
     .catch(next);
+};
+
+exports.updateArticleVote = (req, res, next) => {
+  const { inc_votes: vote } = req.body;
+  const { article_id: articleId } = req.params;
+  updateVoteByArticleId(vote, articleId)
+    .then((article) => {
+      res
+        .status(201)
+        .send({ article: article, message: "updated successfully" });
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 };
