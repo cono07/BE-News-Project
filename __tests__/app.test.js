@@ -93,3 +93,40 @@ describe("GET", () => {
     });
   });
 });
+
+describe("PATCH", () => {
+  describe("/api/articles/:article_id", () => {
+    test('status 201 : returns message "updated successfully"', () => {
+      const voteUpdate = { inc_votes: 5 };
+      return request(app)
+        .patch("/api/articles/3")
+        .send(voteUpdate)
+        .expect(201)
+        .then(({ body: { article, message } }) => {
+          expect(message).toBe("updated successfully");
+          expect(article).toEqual(
+            expect.objectContaining({
+              author: "icellusedkars",
+              title: "Eight pug gifs that remind me of mitch",
+              article_id: 3,
+              body: "some gifs",
+              topic: "mitch",
+              created_at: expect.any(String),
+              votes: 5,
+            })
+          );
+        });
+    });
+  });
+
+  test("status 404: returns message article_id does not exist", () => {
+    const voteUpdate = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/articles/999")
+      .send(voteUpdate)
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("article does not exist");
+      });
+  });
+});
