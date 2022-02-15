@@ -24,5 +24,8 @@ exports.updateArticleVote = (req, res, next) => {
         .status(201)
         .send({ article: article, message: "updated successfully" });
     })
-    .catch(next);
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 };

@@ -96,7 +96,7 @@ describe("GET", () => {
 
 describe("PATCH", () => {
   describe("/api/articles/:article_id", () => {
-    test('status 201 : returns message "updated successfully"', () => {
+    test('status 200 : returns message "updated successfully"', () => {
       const voteUpdate = { inc_votes: 5 };
       return request(app)
         .patch("/api/articles/3")
@@ -158,6 +158,17 @@ describe("PATCH", () => {
       .expect(404)
       .then(({ body: { message } }) => {
         expect(message).toBe("article does not exist");
+      });
+  });
+
+  test("status 404: returns bad request message when article id is not an integer", () => {
+    const voteUpdate = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/articles/banana")
+      .send(voteUpdate)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad request");
       });
   });
 });
