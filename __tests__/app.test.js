@@ -93,3 +93,82 @@ describe("GET", () => {
     });
   });
 });
+
+describe("PATCH", () => {
+  describe("/api/articles/:article_id", () => {
+    test('status 200 : returns message "updated successfully"', () => {
+      const voteUpdate = { inc_votes: 5 };
+      return request(app)
+        .patch("/api/articles/3")
+        .send(voteUpdate)
+        .expect(201)
+        .then(({ body: { article, message } }) => {
+          expect(message).toBe("updated successfully");
+          expect(article).toEqual(
+            expect.objectContaining({
+              author: "icellusedkars",
+              title: "Eight pug gifs that remind me of mitch",
+              article_id: 3,
+              body: "some gifs",
+              topic: "mitch",
+              created_at: expect.any(String),
+              votes: 5,
+            })
+          );
+        });
+    });
+  });
+
+  test('400 status: should return message "bad request" if vote is empty', () => {
+    const voteUpdate = { inc_votes: "" };
+    return request(app)
+      .patch("/api/articles/3")
+      .send(voteUpdate)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad request");
+      });
+  });
+
+  test('400 status: should return message "bad request" if vote is not numerical or body object is empty', () => {
+    const voteUpdate = { inc_votes: "kj<!" };
+    return request(app)
+      .patch("/api/articles/3")
+      .send(voteUpdate)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad request");
+
+        const voteUpdateEmpty = {};
+        return request(app)
+          .patch("/api/articles/3")
+          .send(voteUpdateEmpty)
+          .expect(400)
+          .then(({ body: { message } }) => {
+            expect(message).toBe("bad request");
+          });
+      });
+  });
+
+  test("status 404: returns message article_id does not exist", () => {
+    const voteUpdate = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/articles/999")
+      .send(voteUpdate)
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("article does not exist");
+      });
+  });
+
+  test("status 404: returns bad request message when article id is not an integer", () => {
+    const voteUpdate = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/articles/banana")
+      .send(voteUpdate)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad request");
+      });
+  });
+});

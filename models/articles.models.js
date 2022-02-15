@@ -14,3 +14,24 @@ exports.fetchArticleById = (article_id) => {
       return rows[0];
     });
 };
+
+exports.updateVoteByArticleId = (vote, articleId) => {
+  return db
+    .query(
+      `
+      UPDATE articles
+      SET votes = votes + $1
+      WHERE article_id = $2
+      RETURNING *;
+      `,
+      [vote, articleId]
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0)
+        return Promise.reject({
+          status: 404,
+          message: "article does not exist",
+        });
+      return rows[0];
+    });
+};
