@@ -172,3 +172,41 @@ describe("PATCH", () => {
       });
   });
 });
+
+describe.only("GET", () => {
+  describe("/api/users", () => {
+    test("200 status: Success message will be received.", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("endpoint connected successfully");
+        });
+    });
+
+    test('200 status: should return an object of users, with a property of "username" for each user', () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body: { users } }) => {
+          expect(users).toHaveLength(4);
+          users.forEach((user) => {
+            expect(user).toEqual(
+              expect.objectContaining({
+                username: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+
+    test("404: path not found when wrong path entered ", () => {
+      return request(app)
+        .get("/api/userrr")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("path not found");
+        });
+    });
+  });
+});
