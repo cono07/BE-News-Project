@@ -13,10 +13,7 @@ exports.getArticleById = (req, res, next) => {
         .status(200)
         .send({ article, message: "endpoint connected successfully" });
     })
-    .catch((err) => {
-      console.log(err);
-      next(err);
-    });
+    .catch(next);
 };
 
 exports.updateArticleVote = (req, res, next) => {

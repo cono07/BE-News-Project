@@ -57,7 +57,7 @@ describe("GET", () => {
         });
     });
 
-    test.only("status 200 : should return an object matching the id parameter with properties (author, title, article_id, body, topic, created_at, votes, comment_count)", () => {
+    test("status 200 : should return an object matching the id parameter with properties (author, title, article_id, body, topic, created_at, votes, comment_count)", () => {
       return request(app)
         .get("/api/articles/3")
         .expect(200)
