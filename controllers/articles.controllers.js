@@ -2,6 +2,7 @@ const {
   fetchArticleById,
   updateVoteByArticleId,
   checkArticleExists,
+  fetchAllArticles,
 } = require("../models/articles.models");
 
 exports.getArticleById = (req, res, next) => {
@@ -25,7 +26,14 @@ exports.updateArticleVote = (req, res, next) => {
         .send({ article: article, message: "updated successfully" });
     })
     .catch((err) => {
-      console.log(err);
       next(err);
     });
+};
+
+exports.getAllArticles = (req, res, next) => {
+  fetchAllArticles().then((articles) => {
+    res
+      .status(200)
+      .send({ message: "endpoint connected successfully", articles: articles });
+  });
 };
