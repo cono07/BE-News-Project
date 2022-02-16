@@ -31,9 +31,14 @@ exports.updateArticleVote = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  fetchAllArticles().then((articles) => {
-    res
-      .status(200)
-      .send({ message: "endpoint connected successfully", articles: articles });
-  });
+  fetchAllArticles()
+    .then((articles) => {
+      res
+        .status(200)
+        .send({
+          message: "endpoint connected successfully",
+          articles: articles,
+        });
+    })
+    .catch(next);
 };
