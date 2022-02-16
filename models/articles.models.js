@@ -35,3 +35,15 @@ exports.updateVoteByArticleId = (vote, articleId) => {
       return rows[0];
     });
 };
+
+exports.fetchAllArticles = () => {
+  return db
+    .query(
+      `
+  SELECT article_id, author, title, topic, created_at, votes
+  FROM articles;`
+    )
+    .then(({ rows }) => {
+      return rows;
+    });
+};

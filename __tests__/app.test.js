@@ -8,6 +8,7 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 describe("GET", () => {
+  //-- Topics --//
   describe("/api/topics", () => {
     test("status 200: should return a message of 'endpoint connected successfully'", () => {
       return request(app)
@@ -45,6 +46,7 @@ describe("GET", () => {
     });
   });
 
+  //-- Articles --//
   describe("/api/articles/:article_id", () => {
     test('status 200 : should return a message "endpoint connected successfully"', () => {
       return request(app)
@@ -86,6 +88,85 @@ describe("GET", () => {
     test('status 404: should receive message "path not found" when incorrect path entered', () => {
       return request(app)
         .get("/api/articless/1")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("path not found");
+        });
+    });
+  });
+
+  describe("/api/articles", () => {
+    test("status 200", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("endpoint connected successfully");
+        });
+    });
+
+    test("status 200: should return an array of article objects. Each should have property of: author, title, article_id, created_at and votes", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          articles.forEach((article) => {
+            expect(articles);
+            expect(articles).toHaveLength(12);
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+
+    test("status 404 : should return path not found when incorrect path given", () => {
+      return request(app)
+        .get("/api/artples")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("path not found");
+        });
+    });
+  });
+
+  //-- Users --//
+  describe("/api/users", () => {
+    test("200 status: Success message will be received.", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("endpoint connected successfully");
+        });
+    });
+
+    test('200 status: should return an object of users, with a property of "username" for each user', () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body: { users } }) => {
+          expect(users).toHaveLength(4);
+          users.forEach((user) => {
+            expect(user).toEqual(
+              expect.objectContaining({
+                username: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+
+    test("404: path not found when wrong path entered ", () => {
+      return request(app)
+        .get("/api/userrr")
         .expect(404)
         .then(({ body: { message } }) => {
           expect(message).toBe("path not found");
@@ -170,43 +251,5 @@ describe("PATCH", () => {
       .then(({ body: { message } }) => {
         expect(message).toBe("bad request");
       });
-  });
-});
-
-describe.only("GET", () => {
-  describe("/api/users", () => {
-    test("200 status: Success message will be received.", () => {
-      return request(app)
-        .get("/api/users")
-        .expect(200)
-        .then(({ body: { message } }) => {
-          expect(message).toBe("endpoint connected successfully");
-        });
-    });
-
-    test('200 status: should return an object of users, with a property of "username" for each user', () => {
-      return request(app)
-        .get("/api/users")
-        .expect(200)
-        .then(({ body: { users } }) => {
-          expect(users).toHaveLength(4);
-          users.forEach((user) => {
-            expect(user).toEqual(
-              expect.objectContaining({
-                username: expect.any(String),
-              })
-            );
-          });
-        });
-    });
-
-    test("404: path not found when wrong path entered ", () => {
-      return request(app)
-        .get("/api/userrr")
-        .expect(404)
-        .then(({ body: { message } }) => {
-          expect(message).toBe("path not found");
-        });
-    });
   });
 });
