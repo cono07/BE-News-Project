@@ -4,10 +4,12 @@ exports.fetchArticleById = (article_id) => {
   return db
     .query(
       `
-  SELECT users.name AS author, title, topic, article_id, body, topic, created_at, votes
+  SELECT users.name AS author, articles.title, articles.topic, articles.article_id, articles.body, articles.created_at, articles.votes, CAST(COUNT(comments.article_id) AS int) AS comment_count
   FROM articles 
   LEFT JOIN users ON users.username = articles.author
-  WHERE article_id = $1;`,
+  LEFT JOIN comments ON comments.article_id = articles.article_id
+  WHERE articles.article_id = $1
+  GROUP BY users.name, articles.article_id;`,
       [article_id]
     )
     .then(({ rows }) => {

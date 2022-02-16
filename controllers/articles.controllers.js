@@ -13,7 +13,10 @@ exports.getArticleById = (req, res, next) => {
         .status(200)
         .send({ article, message: "endpoint connected successfully" });
     })
-    .catch(next);
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 };
 
 exports.updateArticleVote = (req, res, next) => {
@@ -33,12 +36,10 @@ exports.updateArticleVote = (req, res, next) => {
 exports.getAllArticles = (req, res, next) => {
   fetchAllArticles()
     .then((articles) => {
-      res
-        .status(200)
-        .send({
-          message: "endpoint connected successfully",
-          articles: articles,
-        });
+      res.status(200).send({
+        message: "endpoint connected successfully",
+        articles: articles,
+      });
     })
     .catch(next);
 };
