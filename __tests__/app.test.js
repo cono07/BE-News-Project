@@ -254,3 +254,25 @@ describe("PATCH", () => {
       });
   });
 });
+
+// describe("POST", () => {
+//   describe("/api/articles/:article_id/comments", () => {
+//     test("status 201 : should return an updated comment object with a success message ", () => {
+//       const commentToSend = {
+//         username: "rogersop",
+//         body: "the cats are rising up!",
+//       };
+//       return request(app)
+//         .post("/api/articles/5/comments")
+//         .send(commentToSend)
+//         .expect(201)
+//         .then(({ body: { comment } }) => {
+//           expect(comment).toEqual(
+//             expect.objectContaining({
+//               body: "the cats are rising up!",
+//             })
+//           );
+//         });
+//     });
+//   });
+// });

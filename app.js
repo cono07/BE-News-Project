@@ -22,6 +22,8 @@ app.get("/api/articles", getAllArticles);
 
 app.patch("/api/articles/:article_id", updateArticleVote);
 
+// app.post("/api/articles/:article_id/comments", postCommentByArticleId);
+
 app.all("/*", (req, res) => {
   res.status(404).send({ message: "path not found" });
 });
