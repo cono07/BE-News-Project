@@ -206,6 +206,15 @@ describe("/api/articles/:article_id/comments", () => {
         });
       });
   });
+
+  test('status 422 : should return message of "does not exist" when passed an article_id that is not in the database', () => {
+    return request(app)
+      .get("/api/articles/999/comments")
+      .expect(422)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("does not exist");
+      });
+  });
 });
 
 describe("PATCH", () => {
