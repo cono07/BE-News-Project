@@ -13,8 +13,5 @@ exports.getCommentsByArticleId = (req, res, next) => {
         comments: comments,
       });
     })
-    .catch((err) => {
-      console.log(err);
-      next(err);
-    });
+    .catch(next);
 };
