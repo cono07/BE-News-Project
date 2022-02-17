@@ -158,6 +158,26 @@ describe("GET", () => {
     });
   });
 
+  describe("/api/articles (queries)", () => {
+    test("status 200 : should get all articles and fetch using user queries of sort_by", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("title");
+        });
+    });
+
+    test("status 200 : should return articles in order of either DESC or ASC", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("title", { descending: true });
+        });
+    });
+  });
+
   //-- Users --//
   describe("/api/users", () => {
     test("200 status: Success message will be received.", () => {

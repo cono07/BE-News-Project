@@ -31,12 +31,18 @@ exports.updateArticleVote = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  fetchAllArticles()
+  const { sort_by } = req.query;
+  console.log("here");
+  fetchAllArticles(sort_by)
     .then((articles) => {
+      console.log(articles);
       res.status(200).send({
         message: "endpoint connected successfully",
         articles: articles,
       });
     })
-    .catch(next);
+    .catch((err) => {
+      // console.log(err);
+      next(err);
+    });
 };
