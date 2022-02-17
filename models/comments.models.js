@@ -10,8 +10,8 @@ exports.checkIfIdExists = (articleId) => {
     .then(({ rows }) => {
       if (rows.length === 0)
         return Promise.reject({
-          status: 422,
-          message: "does not exist",
+          status: 404,
+          message: "article does not exist",
         });
     });
 };

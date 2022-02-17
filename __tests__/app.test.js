@@ -207,12 +207,12 @@ describe("/api/articles/:article_id/comments", () => {
       });
   });
 
-  test('status 422 : should return message of "does not exist" when passed an article_id that is not in the database', () => {
+  test('status 404 : should return message of "article does not exist" when passed an article_id that is not in the database', () => {
     return request(app)
       .get("/api/articles/999/comments")
-      .expect(422)
+      .expect(404)
       .then(({ body: { message } }) => {
-        expect(message).toBe("does not exist");
+        expect(message).toBe("article does not exist");
       });
   });
 });
