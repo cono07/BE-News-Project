@@ -168,14 +168,14 @@ describe("GET", () => {
         });
     });
 
-    test("status 200 : should return articles in order of either DESC or ASC", () => {
-      return request(app)
-        .get("/api/articles?sort_by=title")
-        .expect(200)
-        .then(({ body: { articles } }) => {
-          expect(articles).toBeSortedBy("title", { descending: true });
-        });
-    });
+    // test("status 200 : should return articles in order of either DESC or ASC", () => {
+    //   return request(app)
+    //     .get("/api/articles?sort_by=title")
+    //     .expect(200)
+    //     .then(({ body: { articles } }) => {
+    //       expect(articles).toBeSortedBy("title", { descending: true });
+    //     });
+    // });
   });
 
   //-- Users --//
