@@ -12,6 +12,10 @@ const {
 } = require("./controllers/errors.controllers");
 const { getUsers } = require("./controllers/users.controllers");
 
+const {
+  getCommentsByArticleId,
+} = require("./controllers/comments.controllers");
+
 const app = express();
 app.use(express.json());
 
@@ -19,6 +23,7 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/users", getUsers);
 app.get("/api/articles", getAllArticles);
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
 app.patch("/api/articles/:article_id", updateArticleVote);
 
