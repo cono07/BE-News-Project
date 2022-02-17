@@ -112,7 +112,6 @@ describe("GET", () => {
         .expect(200)
         .then(({ body: { articles } }) => {
           articles.forEach((article) => {
-            expect(articles);
             expect(articles).toHaveLength(12);
             expect(article).toEqual(
               expect.objectContaining({
@@ -122,6 +121,27 @@ describe("GET", () => {
                 topic: expect.any(String),
                 created_at: expect.any(String),
                 votes: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+
+    test("status 200 : should return an array of articles which includes a comment_count property", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                comment_count: expect.any(Number),
               })
             );
           });
