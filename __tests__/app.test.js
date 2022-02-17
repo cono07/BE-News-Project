@@ -112,7 +112,6 @@ describe("GET", () => {
         .expect(200)
         .then(({ body: { articles } }) => {
           articles.forEach((article) => {
-            expect(articles);
             expect(articles).toHaveLength(12);
             expect(article).toEqual(
               expect.objectContaining({
