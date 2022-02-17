@@ -112,7 +112,6 @@ describe("GET", () => {
         .expect(200)
         .then(({ body: { articles } }) => {
           articles.forEach((article) => {
-            expect(articles);
             expect(articles).toHaveLength(12);
             expect(article).toEqual(
               expect.objectContaining({
@@ -122,6 +121,27 @@ describe("GET", () => {
                 topic: expect.any(String),
                 created_at: expect.any(String),
                 votes: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+
+    test("status 200 : should return an array of articles which includes a comment_count property", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                comment_count: expect.any(Number),
               })
             );
           });
@@ -173,6 +193,47 @@ describe("GET", () => {
           expect(message).toBe("path not found");
         });
     });
+  });
+});
+
+//-- Comments --//
+describe("/api/articles/:article_id/comments", () => {
+  test('status 200 : should return message "endpoint connected successfully', () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("endpoint connected successfully");
+      });
+  });
+
+  test("status 200 : should return an array of comments for the given article_id. Properties: comment_id, votes, created_at, author, body", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body: { comments } }) => {
+        expect(comments).toHaveLength(11);
+        comments.forEach((comment) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+
+  test('status 404 : should return message of "article does not exist" when passed an article_id that is not in the database', () => {
+    return request(app)
+      .get("/api/articles/999/comments")
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("article does not exist");
+      });
   });
 });
 
