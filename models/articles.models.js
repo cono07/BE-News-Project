@@ -42,8 +42,11 @@ exports.fetchAllArticles = () => {
   return db
     .query(
       `
-  SELECT article_id, author, title, topic, created_at, votes
-  FROM articles;`
+  SELECT articles.article_id, articles.author, articles.title, articles.topic, 
+  articles.created_at, articles.votes, CAST(COUNT(comments.article_id) AS int) AS comment_count
+  FROM articles
+  LEFT JOIN comments ON comments.article_id = articles.article_id
+  GROUP BY articles.article_id;`
     )
     .then(({ rows }) => {
       return rows;

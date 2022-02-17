@@ -128,6 +128,27 @@ describe("GET", () => {
         });
     });
 
+    test("status 200 : should return an array of articles which includes a comment_count property", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                comment_count: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+
     test("status 404 : should return path not found when incorrect path given", () => {
       return request(app)
         .get("/api/artples")
