@@ -316,24 +316,66 @@ describe("PATCH", () => {
   });
 });
 
-// describe("POST", () => {
-//   describe("/api/articles/:article_id/comments", () => {
-//     test("status 201 : should return an updated comment object with a success message ", () => {
-//       const commentToSend = {
-//         username: "rogersop",
-//         body: "the cats are rising up!",
-//       };
-//       return request(app)
-//         .post("/api/articles/5/comments")
-//         .send(commentToSend)
-//         .expect(201)
-//         .then(({ body: { comment } }) => {
-//           expect(comment).toEqual(
-//             expect.objectContaining({
-//               body: "the cats are rising up!",
-//             })
-//           );
-//         });
-//     });
-//   });
-// });
+describe("POST", () => {
+  describe("/api/articles/:article_id/comments", () => {
+    test("status 201 : should return an updated comment object with a success message ", () => {
+      const commentToSend = {
+        username: "rogersop",
+        body: "the cats are rising up!",
+      };
+      return request(app)
+        .post("/api/articles/5/comments")
+        .send(commentToSend)
+        .expect(201)
+        .then(({ body: { comment } }) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              body: "the cats are rising up!",
+            })
+          );
+        });
+    });
+  });
+
+  test("status 400 : should return message bad request when string entered for article_id", () => {
+    const commentToSend = {
+      username: "rogersop",
+      body: "the cats are rising up!",
+    };
+    return request(app)
+      .post("/api/articles/five/comments")
+      .send(commentToSend)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toEqual("bad request");
+      });
+  });
+
+  test("status 400 : should return message bad input if the username sent does not exist", () => {
+    const commentToSend = {
+      username: "crazyCat",
+      body: "The cats are rising!",
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(commentToSend)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad input");
+      });
+  });
+
+  test("status 404 : should return message bad input if the comment body sent is empty", () => {
+    const commentToSend = {
+      username: "crazyCat",
+      body: "",
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(commentToSend)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad input");
+      });
+  });
+});
