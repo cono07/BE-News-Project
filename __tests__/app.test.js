@@ -392,12 +392,21 @@ describe("DELETE", () => {
     });
   });
 
-  test("status 404 : comment does not exist", () => {
+  test("status 400 : return bad request if comment_id is not an int", () => {
+    return request(app)
+      .delete("/api/comments/dddd")
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad request");
+      });
+  });
+
+  test("status 400 : return bad request if comment_id does not exist", () => {
     return request(app)
       .delete("/api/comments/9999")
       .expect(400)
       .then(({ body: { message } }) => {
-        expect(message).toBe("comment does not exist");
+        expect(message).toBe("bad request - comment does not exist");
       });
   });
 });

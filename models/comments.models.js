@@ -47,27 +47,19 @@ exports.insertCommentByArticleId = (articleId, username, comment) => {
     });
 };
 
-exports.checkCommentIdExists = (commentId) => {
+exports.deleteComment = (commentId) => {
   return db
     .query(
-      `SELECT * FROM comments
-      WHERE comment_id = $1`,
+      `
+  DELETE FROM comments
+  WHERE comment_id = $1 RETURNING *;`,
       [commentId]
     )
     .then(({ rows }) => {
       if (rows.length === 0)
         return Promise.reject({
           status: 400,
-          message: "comment does not exist",
+          message: "bad request - comment does not exist",
         });
     });
-};
-
-exports.deleteComment = (commentId) => {
-  return db.query(
-    `
-  DELETE FROM comments
-  WHERE comment_id = $1 RETURNING *;`,
-    [commentId]
-  );
 };
