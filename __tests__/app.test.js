@@ -168,14 +168,51 @@ describe("GET", () => {
         });
     });
 
-    // test("status 200 : should return articles in order of either DESC or ASC", () => {
-    //   return request(app)
-    //     .get("/api/articles?sort_by=title")
-    //     .expect(200)
-    //     .then(({ body: { articles } }) => {
-    //       expect(articles).toBeSortedBy("title", { descending: true });
-    //     });
-    // });
+    test("status 200 : should return articles in order of either DESC or ASC", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order=desc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("title", { descending: true });
+        });
+    });
+
+    test("status 200 : should return articles filtered by topic value", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order=desc&topic=cats")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toHaveLength(1);
+          expect(articles).toBeSortedBy("title", { descending: true });
+        });
+    });
+
+    test("status 400 : should return message bad request if given a topic that does not exist in the table", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order=desc&topic=rubbish")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("bad request - topic does not exist");
+        });
+    });
+
+    test("status 400 : should return message bad request if given an order type that does not exist", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order=rubbish&topic=cats")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("bad request - order type does not exist");
+        });
+    });
+
+    test("status 400 : should return message bad request if given a sort_by that does not exist", () => {
+      return request(app)
+        .get("/api/articles?sort_by=rubbish&order=desc&topic=cats")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("bad request - sort type does not exist");
+        });
+    });
   });
 
   //-- Users --//

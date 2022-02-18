@@ -31,11 +31,9 @@ exports.updateArticleVote = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  const { sort_by } = req.query;
-  console.log("here");
-  fetchAllArticles(sort_by)
+  const { sort_by, order, topic } = req.query;
+  fetchAllArticles(sort_by, order, topic)
     .then((articles) => {
-      console.log(articles);
       res.status(200).send({
         message: "endpoint connected successfully",
         articles: articles,
