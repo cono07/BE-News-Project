@@ -379,3 +379,25 @@ describe("POST", () => {
       });
   });
 });
+
+describe("DELETE", () => {
+  describe("/api/comments/:comment_id", () => {
+    test("status 204 : should delete comment relating to given comment_id", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(({ res: { statusMessage } }) => {
+          expect(statusMessage).toBe("No Content");
+        });
+    });
+  });
+
+  test("status 404 : comment does not exist", () => {
+    return request(app)
+      .delete("/api/comments/9999")
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("comment does not exist");
+      });
+  });
+});
