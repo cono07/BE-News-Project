@@ -38,17 +38,71 @@ exports.updateVoteByArticleId = (vote, articleId) => {
     });
 };
 
-exports.fetchAllArticles = () => {
-  return db
-    .query(
-      `
-  SELECT articles.article_id, articles.author, articles.title, articles.topic, 
+//add query values array [] queryValuesArr
+//use $1 etc placements and drop it in the query string.
+// return db.query(queryStr, queryValuesArr)
+
+//Whitelist of accepted values to avoid sql injection/bad requests
+const orderByArr = ["asc", "desc"];
+const topicsArr = ["mitch", "cats", "paper"];
+const articleSortBy = [
+  "title",
+  "topic",
+  "author",
+  "body",
+  "created_at",
+  "votes",
+];
+
+exports.fetchAllArticles = (sort_by, order, topic) => {
+  const sortBy = sort_by;
+  const orderBy = order;
+  const topicPicker = topic;
+
+  //reject any requests with queries that do no contain whitelisted values
+  if (topicPicker && !topicsArr.includes(topicPicker)) {
+    return Promise.reject({
+      status: 400,
+      message: "bad request - topic does not exist",
+    });
+  }
+
+  if (orderBy && !orderByArr.includes(orderBy)) {
+    return Promise.reject({
+      status: 400,
+      message: "bad request - order type does not exist",
+    });
+  }
+
+  if (sortBy && !articleSortBy.includes(sortBy)) {
+    return Promise.reject({
+      status: 400,
+      message: "bad request - sort type does not exist",
+    });
+  }
+
+  let queryStr = `SELECT articles.article_id, articles.author, articles.title, articles.topic,
   articles.created_at, articles.votes, CAST(COUNT(comments.article_id) AS int) AS comment_count
   FROM articles
-  LEFT JOIN comments ON comments.article_id = articles.article_id
-  GROUP BY articles.article_id;`
-    )
-    .then(({ rows }) => {
-      return rows;
-    });
+  LEFT JOIN comments ON comments.article_id = articles.article_id`;
+
+  if (topicPicker) {
+    queryStr += ` WHERE articles.topic = '${topicPicker}'`;
+  }
+
+  queryStr += ` GROUP BY articles.article_id`;
+
+  if (sort_by) {
+    queryStr += ` ORDER BY articles.${sortBy}`;
+    if (order) {
+      queryStr += ` ${orderBy}`;
+    }
+    queryStr += `;`;
+  } else {
+    queryStr += ` ORDER BY created_at DESC;`;
+  }
+
+  return db.query(queryStr).then(({ rows }) => {
+    return rows;
+  });
 };
