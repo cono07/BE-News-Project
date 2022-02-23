@@ -251,6 +251,23 @@ describe("GET", () => {
         });
     });
   });
+
+  //-- Endpoints --//
+
+  describe("/api", () => {
+    test("status 200 : return an array of endpoint objects", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body: { endPoints } }) => {
+          expect(endPoints).toEqual(
+            expect.objectContaining({
+              "GET /api": expect.any(Object),
+            })
+          );
+        });
+    });
+  });
 });
 
 //-- Comments --//
