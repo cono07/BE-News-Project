@@ -46,3 +46,20 @@ exports.insertCommentByArticleId = (articleId, username, comment) => {
       return rows[0];
     });
 };
+
+exports.deleteComment = (commentId) => {
+  return db
+    .query(
+      `
+  DELETE FROM comments
+  WHERE comment_id = $1 RETURNING *;`,
+      [commentId]
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0)
+        return Promise.reject({
+          status: 400,
+          message: "bad request - comment does not exist",
+        });
+    });
+};

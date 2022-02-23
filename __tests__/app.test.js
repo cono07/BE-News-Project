@@ -436,3 +436,34 @@ describe("POST", () => {
       });
   });
 });
+
+describe("DELETE", () => {
+  describe("/api/comments/:comment_id", () => {
+    test("status 204 : should delete comment relating to given comment_id", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(({ res: { statusMessage } }) => {
+          expect(statusMessage).toBe("No Content");
+        });
+    });
+  });
+
+  test("status 400 : return bad request if comment_id is not an int", () => {
+    return request(app)
+      .delete("/api/comments/dddd")
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad request");
+      });
+  });
+
+  test("status 400 : return bad request if comment_id does not exist", () => {
+    return request(app)
+      .delete("/api/comments/9999")
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("bad request - comment does not exist");
+      });
+  });
+});
