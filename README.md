@@ -1,4 +1,4 @@
-# Northcoders News API
+# News API App
 
 This app serves data from a PostgreSQL database with articles, comments and users.
 API endpoints have been created using Express.js and an Model-View-Controller approach has been taken to organize the project.
