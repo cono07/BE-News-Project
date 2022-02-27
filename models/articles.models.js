@@ -38,10 +38,6 @@ exports.updateVoteByArticleId = (vote, articleId) => {
     });
 };
 
-//add query values array [] queryValuesArr
-//use $1 etc placements and drop it in the query string.
-// return db.query(queryStr, queryValuesArr)
-
 //Whitelist of accepted values to avoid sql injection/bad requests
 const orderByArr = ["asc", "desc"];
 const topicsArr = ["mitch", "cats", "paper"];
