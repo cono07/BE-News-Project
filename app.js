@@ -10,7 +10,10 @@ const {
   handle500Errors,
   handleCustomErrors,
 } = require("./controllers/errors.controllers");
-const { getUsers } = require("./controllers/users.controllers");
+const {
+  getUsers,
+  getUsersByUsername,
+} = require("./controllers/users.controllers");
 
 const {
   getCommentsByArticleId,
@@ -29,6 +32,7 @@ app.get("/api/users", getUsers);
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 app.get("/api", getApiEndpoints);
+app.get("/api/users/:username", getUsersByUsername);
 
 app.patch("/api/articles/:article_id", updateArticleVote);
 
