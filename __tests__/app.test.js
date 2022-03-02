@@ -252,6 +252,33 @@ describe("GET", () => {
     });
   });
 
+  describe("/api/users/:username", () => {
+    test("status 200 : should return an object with username, avatar_url and name", () => {
+      return request(app)
+        .get("/api/users/rogersop")
+        .expect(200)
+        .then(({ body: { user } }) => {
+          expect(user).toEqual(
+            expect.objectContaining({
+              username: "rogersop",
+              name: "paul",
+              avatar_url:
+                "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+            })
+          );
+        });
+    });
+
+    test('status 404: should receive message "user does not exist" when unknown username requested', () => {
+      return request(app)
+        .get("/api/users/22Test")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("user does not exist");
+        });
+    });
+  });
+
   //-- Endpoints --//
 
   describe("/api", () => {
