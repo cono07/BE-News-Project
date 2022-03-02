@@ -415,6 +415,68 @@ describe("PATCH", () => {
         });
     });
   });
+
+  describe("/api/comments/:comment_id", () => {
+    test("status 200 : should return an object of the updated comment with the vote increased when passed a positive number", () => {
+      const voteUpdate = { inc_votes: 12 };
+      return request(app)
+        .patch("/api/comments/8")
+        .send(voteUpdate)
+        .expect(200)
+        .then(({ body: { comment } }) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              body: "Delicious crackerbreads",
+              votes: 12,
+              author: "icellusedkars",
+              article_id: 1,
+              created_at: expect.any(String),
+            })
+          );
+        });
+    });
+
+    test("status 200 : should return an object of the updated comment with the vote decreased when sent a negative number", () => {
+      const voteUpdate = { inc_votes: -5 };
+      return request(app)
+        .patch("/api/comments/8")
+        .send(voteUpdate)
+        .expect(200)
+        .then(({ body: { comment } }) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              body: "Delicious crackerbreads",
+              votes: -5,
+              author: "icellusedkars",
+              article_id: 1,
+              created_at: expect.any(String),
+            })
+          );
+        });
+    });
+
+    test("status 400 : should return message of bad request if vote is empty", () => {
+      const voteUpdate = { inc_votes: "" };
+      return request(app)
+        .patch("/api/comments/8")
+        .send(voteUpdate)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toEqual("bad request");
+        });
+    });
+
+    test("status 404 : should return message of comment does not exists when passed an id that does not exist", () => {
+      const voteUpdate = { inc_votes: "10" };
+      return request(app)
+        .patch("/api/comments/999")
+        .send(voteUpdate)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toEqual("comment does not exist");
+        });
+    });
+  });
 });
 
 describe("POST", () => {

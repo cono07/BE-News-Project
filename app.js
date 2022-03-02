@@ -19,6 +19,7 @@ const {
   getCommentsByArticleId,
   postCommentByArticleId,
   deleteCommentById,
+  updateCommentVote,
 } = require("./controllers/comments.controllers");
 
 const { getApiEndpoints } = require("./controllers/endpoints.controllers");
@@ -35,6 +36,7 @@ app.get("/api", getApiEndpoints);
 app.get("/api/users/:username", getUsersByUsername);
 
 app.patch("/api/articles/:article_id", updateArticleVote);
+app.patch("/api/comments/:comment_id", updateCommentVote);
 
 app.post("/api/articles/:article_id/comments", postCommentByArticleId);
 
