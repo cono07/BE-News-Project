@@ -3,6 +3,10 @@
 This app serves data from a PostgreSQL database with articles, comments and users.
 API endpoints have been created using Express.js and an Model-View-Controller approach has been taken to organize the project.
 
+## Hosted on Heroku
+
+https://nc-news-app-project.herokuapp.com/
+
 ## Environment setup
 
 To set the environment values for the database, use the following:
