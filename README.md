@@ -46,11 +46,13 @@ run `npm install` to install the following dependencies:
 - `GET /api/topics`
 - `GET /api/articles/:article_id`
 - `GET /api/users`
+- `GET /api/users/:username`
 - `GET /api/articles`
 - `GET /api/articles/:article_id/comments`
 - `GET /api`
 
 - `PATCH /api/articles/:article_id`
+- `PATCH /api/comments/:comment_id`
 
 - `POST api/articles/:article_id/comments`
 

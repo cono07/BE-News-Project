@@ -81,6 +81,18 @@
     }
   },
 
+  "GET /api/users/:username": {
+    "description": "serves a user object when given a username",
+    "queries": ["grumpy19"],
+    "exampleResponse": {
+      "user": {
+        "username": "grumpy19",
+        "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013",
+        "name": "Paul Grump"
+      }
+    }
+  },
+
   "PATCH /api/articles/:article_id": {
     "description": "takes an object with an inc_votes key and updates the votes of the requested article_id.",
     "queries": 3,
@@ -97,6 +109,21 @@
           "votes": 5
         }
       ]
+    }
+  },
+
+  "PATCH /api/comments/:comment_id": {
+    "description": "takes an object with an inc_votes key and updates the votes of the requested comment_id. Returns the updated comment object",
+    "queries": [2],
+    "reqBody": { "inc_votes": 12 },
+    "exampleResponse": {
+      "comment": {
+        "body": "Delicious crackerbreads",
+        "votes": 12,
+        "author": "icellusedkars",
+        "article_id": 1,
+        "created_at": "2020-11-03T09:12:00.000Z"
+      }
     }
   },
 
