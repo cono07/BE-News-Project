@@ -1,6 +1,7 @@
 const db = require("../db/connection");
 const topicsDev = require("../db/data/development-data/topics");
 const topicsTest = require("../db/data/test-data/topics");
+const ENV = process.env.NODE_ENV || "development";
 
 exports.fetchArticleById = (article_id) => {
   return db
@@ -54,11 +55,11 @@ const articleSortBy = [
 
 //set topics list depending on database in use (test or development)
 let topicsList = [];
-if (process.env.NODE_ENV === "development") {
+if (ENV === "development") {
   topicsList = topicsDev.map((topic) => {
     return topic.slug;
   });
-} else if (process.env.NODE_ENV === "test") {
+} else if (ENV === "test") {
   topicsList = topicsTest.map((topic) => {
     return topic.slug;
   });
