@@ -3,6 +3,8 @@ const topicsDev = require("../db/data/development-data/topics");
 const topicsTest = require("../db/data/test-data/topics");
 const ENV = process.env.NODE_ENV || "development";
 
+// console.log(process.env.NODE_ENV);
+
 exports.fetchArticleById = (article_id) => {
   return db
     .query(
@@ -55,12 +57,22 @@ const articleSortBy = [
 
 //set topics list depending on database in use (test or development)
 let topicsList = [];
-if (ENV === "development") {
-  topicsList = topicsDev.map((topic) => {
+// if (ENV === "development") {
+//   topicsList = topicsDev.map((topic) => {
+//     return topic.slug;
+//   });
+// } else if (ENV === "test") {
+//   topicsList = topicsTest.map((topic) => {
+//     return topic.slug;
+//   });
+// }
+
+if (ENV === "test") {
+  topicsList = topicsTest.map((topic) => {
     return topic.slug;
   });
-} else if (ENV === "test") {
-  topicsList = topicsTest.map((topic) => {
+} else {
+  topicsList = topicsDev.map((topic) => {
     return topic.slug;
   });
 }
