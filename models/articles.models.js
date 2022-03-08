@@ -1,4 +1,6 @@
 const db = require("../db/connection");
+const topicsDev = require("../db/data/development-data/topics");
+const topicsTest = require("../db/data/test-data/topics");
 
 exports.fetchArticleById = (article_id) => {
   return db
@@ -50,13 +52,25 @@ const articleSortBy = [
   "votes",
 ];
 
+//set topics list depending on database in use (test or development)
+let topicsList = [];
+if (process.env.NODE_ENV === "development") {
+  topicsList = topicsDev.map((topic) => {
+    return topic.slug;
+  });
+} else if (process.env.NODE_ENV === "test") {
+  topicsList = topicsTest.map((topic) => {
+    return topic.slug;
+  });
+}
+
 exports.fetchAllArticles = (sort_by, order, topic) => {
   const sortBy = sort_by;
   const orderBy = order;
   const topicPicker = topic;
 
   //reject any requests with queries that do no contain whitelisted values
-  if (topicPicker && !topicsArr.includes(topicPicker)) {
+  if (topicPicker && !topicsList.includes(topicPicker)) {
     return Promise.reject({
       status: 400,
       message: "bad request - topic does not exist",
