@@ -50,6 +50,7 @@ const articleSortBy = [
   "body",
   "created_at",
   "votes",
+  "comment_count",
 ];
 //set topics list depending on database in use (test or development)
 let topicsList = [];
