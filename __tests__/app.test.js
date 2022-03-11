@@ -161,7 +161,7 @@ describe("GET", () => {
   describe("/api/articles (queries)", () => {
     test("status 200 : should get all articles and fetch using user queries of sort_by", () => {
       return request(app)
-        .get("/api/articles?sort_by=title")
+        .get("/api/articles?sort_by=title&order=asc")
         .expect(200)
         .then(({ body: { articles } }) => {
           expect(articles).toBeSortedBy("title");

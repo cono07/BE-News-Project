@@ -42,7 +42,7 @@ exports.updateVoteByArticleId = (vote, articleId) => {
 };
 
 //Whitelist of accepted values to avoid sql injection/bad requests
-const orderByArr = ["asc", "desc"];
+const orderByArr = ["asc", "desc", "ASC", "DESC"];
 const articleSortBy = [
   "title",
   "topic",
@@ -64,7 +64,7 @@ if (ENV === "test") {
   });
 }
 
-exports.fetchAllArticles = (sort_by, order, topic) => {
+exports.fetchAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   const sortBy = sort_by;
   const orderBy = order;
   const topicPicker = topic;
