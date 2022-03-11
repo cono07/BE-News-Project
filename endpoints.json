@@ -132,7 +132,7 @@
     "queries": [3],
     "reqBody": {
       "username": "icellusedkars",
-      "comment": "some comment body"
+      "body": "some comment body"
     },
     "expectedResponse": {
       "comment": [
