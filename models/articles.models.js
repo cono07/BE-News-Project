@@ -103,8 +103,9 @@ exports.fetchAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
 
   queryStr += ` GROUP BY articles.article_id`;
 
+  //removed articles. from sort by to prevent error when sorting by comment_count (comments table)
   if (sort_by) {
-    queryStr += ` ORDER BY articles.${sortBy}`;
+    queryStr += ` ORDER BY ${sortBy}`;
     if (order) {
       queryStr += ` ${orderBy}`;
     }
@@ -114,6 +115,7 @@ exports.fetchAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   }
 
   return db.query(queryStr).then(({ rows }) => {
+    console.log(rows);
     return rows;
   });
 };

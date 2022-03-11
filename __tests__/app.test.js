@@ -168,6 +168,15 @@ describe("GET", () => {
         });
     });
 
+    test("status 200 : should get all articles and fetch using user queries of sort_by", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_count&order=desc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("comment_count", { descending: true });
+        });
+    });
+
     test("status 200 : should return articles in order of either DESC or ASC", () => {
       return request(app)
         .get("/api/articles?sort_by=title&order=desc")
