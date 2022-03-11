@@ -23,7 +23,7 @@ exports.fetchCommentsByArticleId = (articleId) => {
     SELECT comments.article_id, comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body
     FROM comments
     LEFT JOIN articles ON articles.article_id = comments.article_id
-    WHERE comments.article_id = $1;`,
+    WHERE comments.article_id = $1 ORDER BY comments.created_at DESC`,
       [articleId]
     )
     .then(({ rows }) => {
