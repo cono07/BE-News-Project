@@ -85,6 +85,14 @@ describe("GET", () => {
           expect(message).toBe("bad request");
         });
     });
+    test('status 400: should receive message "bad request" when article id not found', () => {
+      return request(app)
+        .get("/api/articles/999")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad request - article does not exist");
+        });
+    });
 
     test('status 404: should receive message "path not found" when incorrect path entered', () => {
       return request(app)
@@ -271,8 +279,7 @@ describe("GET", () => {
             expect.objectContaining({
               username: "rogersop",
               name: "paul",
-              avatar_url:
-                "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+              avatar_url: "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
             })
           );
         });

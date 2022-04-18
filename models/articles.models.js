@@ -16,6 +16,12 @@ exports.fetchArticleById = (article_id) => {
       [article_id]
     )
     .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 400,
+          message: "Bad request - article does not exist",
+        });
+      }
       return rows[0];
     });
 };
@@ -43,15 +49,7 @@ exports.updateVoteByArticleId = (vote, articleId) => {
 
 //Whitelist of accepted values to avoid sql injection/bad requests
 const orderByArr = ["asc", "desc", "ASC", "DESC"];
-const articleSortBy = [
-  "title",
-  "topic",
-  "author",
-  "body",
-  "created_at",
-  "votes",
-  "comment_count",
-];
+const articleSortBy = ["title", "topic", "author", "body", "created_at", "votes", "comment_count"];
 //set topics list depending on database in use (test or development)
 let topicsList = [];
 
@@ -115,7 +113,6 @@ exports.fetchAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
   }
 
   return db.query(queryStr).then(({ rows }) => {
-    console.log(rows);
     return rows;
   });
 };
