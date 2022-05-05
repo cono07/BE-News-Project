@@ -5,7 +5,7 @@ API endpoints have been created using Express.js and an Model-View-Controller ap
 
 ## Hosted on Heroku
 
-https://nc-news-app-project.herokuapp.com/
+https://nc-news-app-project.herokuapp.com/api
 
 ## Environment setup
 
